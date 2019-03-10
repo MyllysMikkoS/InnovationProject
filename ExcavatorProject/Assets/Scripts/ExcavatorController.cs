@@ -43,10 +43,10 @@ public class ExcavatorController : MonoBehaviour
         // for testing update angle every 50ms => 20 times per second
         if (Time.time >= nextDataUpdate)
         {
-            if(CanListener.Instance.isConnected())
-                UpdateAngleData(/*50 * BoomSlider.GetComponent<Slider>().value, 110 * StickSlider.GetComponent<Slider>().value, 165 * BucketSlider.GetComponent<Slider>().value*/);
-            else
-                SceneManager.LoadScene(0);
+            //if(CanListener.Instance.isConnected())
+                UpdateAngleData(50 * BoomSlider.GetComponent<Slider>().value, 110 * StickSlider.GetComponent<Slider>().value, 165 * BucketSlider.GetComponent<Slider>().value);
+            //else
+            //    SceneManager.LoadScene(0);
             nextDataUpdate = Time.time + updateInterval;
         }
 
@@ -61,14 +61,14 @@ public class ExcavatorController : MonoBehaviour
         Bucket.transform.eulerAngles = new Vector3(0, 0, CurrentBucketAngle);
     }
 
-    public void UpdateAngleData(/*float BoomAngle, float StickAngle, float BucketAngle*/)
+    public void UpdateAngleData(float BoomAngle, float StickAngle, float BucketAngle)
     {
-        float boom = ExcavatorData392.Instance.getBoom();
+        /*float boom = ExcavatorData392.Instance.getBoom();
         float[] arm = ExcavatorData392.Instance.getArm();
-        float[] bucket = ExcavatorData392.Instance.getBucket();
-        CurrentBoomAngle = BoomAngleZero + boom;
-        CurrentStickAngle = StickAngleZero + arm[1] + arm[0];
-        CurrentBucketAngle = BucketAngleZero + bucket[1] + bucket[0];
+        float[] bucket = ExcavatorData392.Instance.getBucket();*/
+        CurrentBoomAngle = BoomAngleZero + BoomAngle;
+        CurrentStickAngle = StickAngleZero + CurrentBoomAngle + StickAngle;
+        CurrentBucketAngle = BucketAngleZero + CurrentStickAngle + BucketAngle;
     }
 
     private void OnApplicationPause(bool pause)
