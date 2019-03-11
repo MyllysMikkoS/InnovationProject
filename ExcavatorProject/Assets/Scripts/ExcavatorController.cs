@@ -10,6 +10,10 @@ public class ExcavatorController : MonoBehaviour
     public GameObject Boom;
     public GameObject Stick;
     public GameObject Bucket;
+    public GameObject TipPoint;
+    public GameObject ZeroPoint;
+    public Text Height;
+    public Text Distance;
 
     // FOR TESTING
     public GameObject BoomSlider;
@@ -51,7 +55,17 @@ public class ExcavatorController : MonoBehaviour
         }
 
         SetExcavatorAngles();
-        
+
+        Vector3 position = TipPoint.transform.position;
+        position.y -= 1.3f;
+        Height.transform.position = position;
+        position.x -= 2f;
+        position.y += 1.3f;
+        Distance.transform.position = position;
+        float HeightValue = (TipPoint.transform.position.y - ZeroPoint.transform.position.y) * 1.25f;
+        float DistanceValue = (TipPoint.transform.position.x - ZeroPoint.transform.position.x) * -1.25f;
+        Height.text = HeightValue.ToString("0.00") + " m";
+        Distance.text = DistanceValue.ToString("0.00") + " m";
     }
 
     public void SetExcavatorAngles()
@@ -69,6 +83,11 @@ public class ExcavatorController : MonoBehaviour
         CurrentBoomAngle = BoomAngleZero + BoomAngle;
         CurrentStickAngle = StickAngleZero + CurrentBoomAngle + StickAngle;
         CurrentBucketAngle = BucketAngleZero + CurrentStickAngle + BucketAngle;
+    }
+
+    public void SetZeroPoint()
+    {
+        ZeroPoint.transform.position = TipPoint.transform.position;
     }
 
     private void OnApplicationPause(bool pause)
