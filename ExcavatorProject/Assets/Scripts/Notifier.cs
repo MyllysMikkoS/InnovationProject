@@ -122,6 +122,7 @@ internal class Data
 
     public void parseMessage(string header, string message)
     {
+        /*
         if (header.StartsWith("386"))
         {
             if (message != null)
@@ -137,16 +138,19 @@ internal class Data
             if (message != null)
                 parse389(message);
         }
-        else if (header.StartsWith("392"))
+        */
+        if (header.StartsWith("392"))
         {
             if (message != null)
                 parse392(message);
         }
+        /*
         else if (header.StartsWith("393"))
         {
             if (message != null)
                 parse393(message);
         }
+    */  
     }
 
     private void parse386(string message)
@@ -210,7 +214,8 @@ internal class Data
     {
         string[] values = message.Split('.');
         int length = values.Length;
-
+        Debug.Log(message);
+        /*
         if (length > 0)
             boomAngle[0] = convertToDegrees(Convert.ToInt32(values[0]));
         if (length > 1)
@@ -227,9 +232,48 @@ internal class Data
             headingAngle[0] = convertToDegrees(Convert.ToInt32(values[6]));
         if (length > 7)
             headingAngle[1] = convertToDegrees(Convert.ToInt32(values[7]));
-        ExcavatorData392.Instance.setData(boomAngle, armAngle, bucketAngle, headingAngle);
-        //Debug.Log("boomAngle: " + boomAngle[0] + ", " + boomAngle[1] + "\narmAngle " + armAngle[0] + ", " + armAngle[1] +
-        //    "\nbucketAngle" + bucketAngle[0] + ", " + bucketAngle[1] + "\nheadingAngle " + headingAngle[0] + ", " + headingAngle[1]);
+        */
+        if (length > 1)
+        {
+            boomAngle[0] = Convert.ToInt32(values[0]);
+            boomAngle[1] = Convert.ToInt32(values[1]);
+            ExcavatorData392.Instance.setBoom(convertBoom(boomAngle[0], boomAngle[1]));
+        }
+        if (length > 3)
+        {
+            armAngle[0] = Convert.ToInt32(values[2]);
+            armAngle[1] = Convert.ToInt32(values[3]);
+            ExcavatorData392.Instance.setArm(convertArm(armAngle[0], armAngle[1]));
+        }
+        if (length > 5)
+        {
+            bucketAngle[0] = Convert.ToInt32(values[4]);
+            bucketAngle[1] = Convert.ToInt32(values[5]);
+            ExcavatorData392.Instance.setBucket(convertBucket(bucketAngle[0], bucketAngle[1]));
+        }
+        //Debug.Log("boomAngle: " + (int)boomAngle[0] + ", " + (int)boomAngle[1] + "\narmAngle " + (int)armAngle[0] + ", " + (int)armAngle[1] +
+        //    "\nbucketAngle" + (int)bucketAngle[0] + ", " + (int)bucketAngle[1] + "\nheadingAngle " + (int)headingAngle[0] + ", " + (int)headingAngle[1]);
+    }
+
+    float convertBoom(float boomOne, float boomTwo)
+    {
+        Debug.Log("BOOMONE: " + boomOne + " BOOMTWO: " + boomTwo);
+        return (float)((256 * boomTwo) + boomOne) / 10;
+    }
+
+    float convertArm(float armOne, float armTwo)
+    {
+        Debug.Log("ARMONE: " + armOne + " ARMTWO: " + armTwo);
+        return (float)((((256 * armTwo) + armOne) - 64058) / 10) - 64.35f;
+    }
+
+    float convertBucket(float bucketOne, float bucketTwo)
+    {
+        Debug.Log("BUCKETONE: " + bucketOne + " BUCKETTWO: " + bucketTwo);
+        if (bucketTwo > 2)
+            return (float)(((256 * bucketTwo) + bucketOne) - 65536) / 10;
+        else
+            return (float)((256 * bucketTwo) + bucketOne) / -10;
     }
 
     private void parse393(string message)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using UnityEngine;
 
 class ExcavatorData386
 {
@@ -95,9 +95,9 @@ class ExcavatorData389
 
 class ExcavatorData392
 {
-    private float[] bucketAngle = new float[2] { 0, 0 };
-    private float[] boomAngle = new float[2] { 0, 0 };
-    private float[] armAngle = new float[2] { 0, 0 };
+    private float bucketAngle = 0;
+    private float boomAngle = 0;
+    private float armAngle = 0;
     private float[] headingAngle = new float[2] { 0, 0 };
     private readonly object lock392 = new object();
 
@@ -108,30 +108,44 @@ new Lazy<ExcavatorData392>(() => new ExcavatorData392());
 
 public static ExcavatorData392 Instance { get { return lazy.Value; } }
 
-public void setData(float[] boom, float[] arm, float[] bucket, float[] heading)
+public void setBoom(float boom)
     {
         lock (lock392)
         {
             boomAngle = boom;
-            armAngle = arm;
-            bucketAngle = bucket;
-            headingAngle = heading;
+            Debug.Log("BOOM: " + boomAngle);
         }
     }
 
+    public void setArm(float arm)
+    {
+        lock (lock392)
+        {
+            armAngle = arm;
+            Debug.Log("ARM: " + armAngle);
+        }
+    }
+    public void setBucket(float bucket)
+    {
+        lock (lock392)
+        {
+            bucketAngle = bucket;
+            Debug.Log("BUCKET: " + bucketAngle);
+        }
+    }
     public float getBoom()
     {
         lock (lock392)
-            return boomAngle[0];
+            return boomAngle;
     }
 
-    public float[] getArm()
+    public float getArm()
     {
         lock (lock392)
             return armAngle;
     }
 
-    public float[] getBucket()
+    public float getBucket()
     {
         lock (lock392)
             return bucketAngle;
