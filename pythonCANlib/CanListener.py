@@ -1,58 +1,110 @@
 import signal
 import sys
+import threading
 from canlib import canlib, Frame
-from websocket import create_connection
+from websocket import create_connection, WebSocketConnectionClosedException
 
 
-def send_start_signal(ch):
-    frame = Frame(id_=0, data=[1, 0], dlc=2, flags=0)
-    ch.write(frame)
+class CanListener:
 
+    def __init__(self):
+        self.channel = None
+        self.webSocket = None
+        self.listenClient = False
+        self.clientMsgListener = threading.Thread(target=self.__client_msg_listener)
 
-def dump_message(id, msg, dlc, flag, time):
-    if flag & canlib.canMSG_ERROR_FRAME != 0:
-        print("***ERROR FRAME RECEIVED***")
-    else:
-        dataStr = ""
-        msgLen = len(msg)
-
-        for i in range(0, 8):
-            if i < msgLen:
-                dataStr += "{}".format(msg[i])
-                if i != (msgLen - 1):
-                    dataStr += "."
-
-        ws.send("{0}:{1}".format(id, dataStr))
-
-
-def dump_message_loop(ch):
-    finished = False
-    while not finished:
+    def start_listening_channel(self, ch, flags=canlib.canOPEN_ACCEPT_VIRTUAL, bit_rate=canlib.canBITRATE_250K):
         try:
-            id, msg, dlc, flag, time = ch.read(50)
-            hasMessage = True
+            self.channel = canlib.openChannel(ch, flags)
+            self.channel.setBusParams(bit_rate)
+            self.channel.busOn()
 
-            while hasMessage:
-                if 386 <= id <= 393 and id != 390:
-                    dump_message(id, msg, dlc, flag, time)
-                try:
-                    id, msg, dlc, flag, time = ch.read()
-                except canlib.canNoMsg as ex:
-                    hasMessage = False
-                except canlib.canError as ex:
-                    print(ex)
-                    finished = True
-        except canlib.canNoMsg as ex:
-            None
-        except canlib.canError as ex:
+            # Set node to operational state
+            self.__send_start_signal()
+
+            # Start thread for listen client messages
+            if self.listenClient:
+                self.clientMsgListener.start()
+
+            # Start listening for messages
+            self.__dump_message_loop()
+
+        except canlib.exceptions.CanNotFound as ex:
             print(ex)
-            finished = True
+
+    def stop(self):
+        self.listenClient = False
+        self.clientMsgListener.join(5)
+        if self.webSocket is not None:
+            self.webSocket.close()
+        self.channel.busOff()
+        self.channel.close()
+
+    def set_web_socket(self, ip_address, listen_client_messages=False):
+        self.webSocket = create_connection(ip_address)
+        self.listenClient = listen_client_messages
+
+    def __send_start_signal(self):
+        frame = Frame(id_=0, data=[1, 0], dlc=2, flags=0)
+        self.channel.write(frame)
+
+    def __send_reset_zero_level_signal(self):
+        frame = Frame(id_=0, data=[int('011001111', 2), 32, 32, 2, 1], dlc=8, flags=0)
+        self.channel.write(frame)
+
+    def __dump_message(self, id, msg, dlc, flag, time):
+        if flag & canlib.canMSG_ERROR_FRAME != 0:
+            print("***ERROR FRAME RECEIVED***")
+        else:
+            data_str = ""
+            msg_len = len(msg)
+
+            for i in range(0, 8):
+                if i < msg_len:
+                    data_str += "{}".format(msg[i])
+                    if i != (msg_len - 1):
+                        data_str += "."
+            if self.webSocket is not None:
+                self.webSocket.send("{0}:{1}".format(id, data_str))
+            else:
+                print("{0}:{1}".format(id, data_str))
+
+    def __dump_message_loop(self):
+        finished = False
+        while not finished:
+            try:
+                id, msg, dlc, flag, time = self.channel.read(50)
+                has_message = True
+
+                while has_message:
+                    if 386 <= id <= 393 and id != 390:
+                        self.__dump_message(id, msg, dlc, flag, time)
+                    try:
+                        id, msg, dlc, flag, time = self.channel.read()
+                    except canlib.canNoMsg as ex:
+                        has_message = False
+                    except canlib.canError as ex:
+                        print(ex)
+                        finished = True
+            except canlib.canNoMsg as ex:
+                None
+            except canlib.canError as ex:
+                print(ex)
+                finished = True
+
+    def __client_msg_listener(self):
+        while self.listenClient:
+            try:
+                result = self.webSocket.recv()
+                if result == "resetZeroLevel":
+                    self.__send_reset_zero_level_signal()
+                    print result
+            except WebSocketConnectionClosedException:
+                self.listenClient = False
 
 
 def exit_gracefully(signum, frame):
-    ws.close()
-    ch.busOff()
-    ch.close()
+    canListener.stop()
     sys.exit()
 
 
@@ -69,22 +121,7 @@ if __name__ == '__main__':
         if len(sys.argv) == 3:
             ip = "ws://" + sys.argv[2]
 
-    try:
-        ch = canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL)
-        ws = create_connection(ip)
-    except canlib.exceptions.CanNotFound as ex:
-        print(ex)
-        sys.exit()
-
-    ch.setBusParams(canlib.canBITRATE_250K)
-    ch.busOn()
-
-    # Set node to operational state
-    send_start_signal(ch)
-
-    # Start listening for messages
-    dump_message_loop(ch)
-
-    # Channel teardown
-    ch.busOff()
-    ch.close()
+    canListener = CanListener()
+    canListener.set_web_socket(ip, True)
+    canListener.start_listening_channel(channel)
+    canListener.stop()
