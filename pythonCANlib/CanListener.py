@@ -8,6 +8,7 @@ from websocket import create_connection, WebSocketConnectionClosedException
 class CanListener:
 
     def __init__(self):
+        self.canIdWhiteList = None
         self.channel = None
         self.webSocket = None
         self.listenClient = False
@@ -40,16 +41,22 @@ class CanListener:
         self.channel.busOff()
         self.channel.close()
 
-    def set_web_socket(self, ip_address, listen_client_messages=False):
-        self.webSocket = create_connection(ip_address)
-        self.listenClient = listen_client_messages
+    def connect_to_web_socket(self, ip_address, listen_client_messages=False):
+        try:
+            self.webSocket = create_connection(ip_address)
+            self.listenClient = listen_client_messages
+        except Exception as ex:
+            print(ex)
+
+    def set_can_id_white_list(self, can_id_white_list):
+        self.canIdWhiteList = can_id_white_list
 
     def __send_start_signal(self):
         frame = Frame(id_=0, data=[1, 0], dlc=2, flags=0)
         self.channel.write(frame)
 
     def __send_reset_zero_level_signal(self):
-        frame = Frame(id_=0, data=[int('011001111', 2), 32, 32, 2, 1], dlc=8, flags=0)
+        frame = Frame(id_=1537, data=[int('000001111', 2), 32, 32, 2, 1], dlc=8, flags=0)  # Check id...
         self.channel.write(frame)
 
     def __dump_message(self, id, msg, dlc, flag, time):
@@ -77,8 +84,12 @@ class CanListener:
                 has_message = True
 
                 while has_message:
-                    if 386 <= id <= 393 and id != 390:
+                    if self.canIdWhiteList is not None:
+                        if id in self.canIdWhiteList:
+                            self.__dump_message(id, msg, dlc, flag, time)
+                    else:
                         self.__dump_message(id, msg, dlc, flag, time)
+
                     try:
                         id, msg, dlc, flag, time = self.channel.read()
                     except canlib.canNoMsg as ex:
@@ -115,6 +126,7 @@ if __name__ == '__main__':
     # Initialization
     channel = 0
     ip = "ws://localhost:8765"
+    ids_to_read = [386, 388, 389, 392, 393]
 
     if len(sys.argv) >= 2:
         channel = int(sys.argv[1])
@@ -122,6 +134,7 @@ if __name__ == '__main__':
             ip = "ws://" + sys.argv[2]
 
     canListener = CanListener()
-    canListener.set_web_socket(ip, True)
+    canListener.set_can_id_white_list(ids_to_read)
+    canListener.connect_to_web_socket(ip, True)
     canListener.start_listening_channel(channel)
     canListener.stop()
