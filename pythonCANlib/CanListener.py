@@ -56,7 +56,8 @@ class CanListener:
         self.channel.write(frame)
 
     def __send_reset_zero_level_signal(self):
-        frame = Frame(id_=1546, data=[int('00101111', 2), 32, 32, 2, 1, 0, 0, 0], dlc=8, flags=0)
+        # COB-id: 0x60A, Byte 1: initiating download, index: 0x2020, sub index: 2
+        frame = Frame(id_=1546, data=[int('00101111', 2), 20, 20, 2, 1, 0, 0, 0], dlc=8, flags=0)
         self.channel.write(frame)
 
     def __dump_message(self, id, msg, dlc, flag, time):
@@ -126,7 +127,7 @@ if __name__ == '__main__':
     # Initialization
     channel = 0
     ip = "ws://localhost:8765"
-    ids_to_read = [386, 388, 389, 392, 393]
+    ids_to_read = [386, 388, 389, 392, 393, 1418]
 
     if len(sys.argv) >= 2:
         channel = int(sys.argv[1])
