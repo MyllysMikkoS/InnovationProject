@@ -56,7 +56,7 @@ class CanListener:
         self.channel.write(frame)
 
     def __send_reset_zero_level_signal(self):
-        frame = Frame(id_=1537, data=[int('000001111', 2), 32, 32, 2, 1], dlc=8, flags=0)  # Check id...
+        frame = Frame(id_=1546, data=[int('00101111', 2), 32, 32, 2, 1, 0, 0, 0], dlc=8, flags=0)
         self.channel.write(frame)
 
     def __dump_message(self, id, msg, dlc, flag, time):
@@ -107,7 +107,7 @@ class CanListener:
         while self.listenClient:
             try:
                 result = self.webSocket.recv()
-                if result == "resetZeroLevel":
+                if result == "RZL":
                     self.__send_reset_zero_level_signal()
                     print result
             except WebSocketConnectionClosedException:
