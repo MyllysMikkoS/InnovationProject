@@ -57,7 +57,7 @@ class CanListener:
 
     def __send_reset_zero_level_signal(self):
         # COB-id: 0x60A, Byte 1: initiating download, index: 0x2020, sub index: 2
-        frame = Frame(id_=1546, data=[int('00101111', 2), 20, 20, 2, 1, 0, 0, 0], dlc=8, flags=0)
+        frame = Frame(id_=1546, data=[int('00101111', 2), 32, 32, 2, 1, 0, 0, 0], dlc=8, flags=0)
         self.channel.write(frame)
 
     def __dump_message(self, id, msg, dlc, flag, time):
