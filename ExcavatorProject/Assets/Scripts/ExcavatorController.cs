@@ -92,6 +92,7 @@ public class ExcavatorController : MonoBehaviour
 
     public void SetZeroPoint()
     {
+        CanListener.Instance.sendResetMessage();
         ZeroPoint.transform.position = TipPoint.transform.position;
     }
 

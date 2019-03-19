@@ -108,7 +108,7 @@ class CanListener:
         while self.listenClient:
             try:
                 result = self.webSocket.recv()
-                if result == "RZL":
+                if result == 'RZL':
                     self.__send_reset_zero_level_signal()
                     print result
             except WebSocketConnectionClosedException:

@@ -113,7 +113,7 @@ public void setBoom(float boom)
         lock (lock392)
         {
             boomAngle = boom;
-            Debug.Log("BOOM: " + boomAngle);
+            //Debug.Log("BOOM: " + boomAngle);
         }
     }
 
@@ -122,7 +122,7 @@ public void setBoom(float boom)
         lock (lock392)
         {
             armAngle = arm;
-            Debug.Log("ARM: " + armAngle);
+            //Debug.Log("ARM: " + armAngle);
         }
     }
     public void setBucket(float bucket)
@@ -130,7 +130,7 @@ public void setBoom(float boom)
         lock (lock392)
         {
             bucketAngle = bucket;
-            Debug.Log("BUCKET: " + bucketAngle);
+            //Debug.Log("BUCKET: " + bucketAngle);
         }
     }
     public float getBoom()

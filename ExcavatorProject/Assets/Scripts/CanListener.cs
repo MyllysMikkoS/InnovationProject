@@ -90,6 +90,12 @@ public class CanListener
         return m_isConnected;
     }
 
+    public void sendResetMessage()
+    {
+        byte[] test = { 82, 90, 76 };
+        m_socket.Send(test);
+    }
+
     public void stop()
     {
         //if(m_isConnected)
