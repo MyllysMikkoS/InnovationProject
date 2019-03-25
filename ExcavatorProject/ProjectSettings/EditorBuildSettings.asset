@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/HomePage.unity
     guid: 61713239f99d81a4fbc9e0b1a2e55a3c
   - enabled: 1

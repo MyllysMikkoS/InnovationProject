@@ -14,6 +14,7 @@ public class ExcavatorController : MonoBehaviour
     public GameObject ZeroPoint;
     public Text Height;
     public Text Distance;
+    public Canvas HomePageCanvas;
 
     // FOR TESTING
     public GameObject BoomSlider;
@@ -37,10 +38,12 @@ public class ExcavatorController : MonoBehaviour
         /*CurrentBoomAngle = BoomAngleZero;
         CurrentStickAngle = StickAngleZero;
         CurrentBucketAngle = BucketAngleZero;*/
+        if(HomePageCanvas.isActiveAndEnabled == false)
+        {
+            UpdateAngleData(BoomAngleZero, StickAngleZero, BucketAngleZero);
 
-        UpdateAngleData(BoomAngleZero, StickAngleZero, BucketAngleZero);
-
-        SetExcavatorAngles();
+            SetExcavatorAngles();
+        }
         //Debug.Log("ExcavatorController scene");
     }
 
@@ -48,7 +51,7 @@ public class ExcavatorController : MonoBehaviour
     void Update()
     {
         // for testing update angle every 50ms => 20 times per second
-        if (Time.time >= nextDataUpdate)
+        if (Time.time >= nextDataUpdate && HomePageCanvas.isActiveAndEnabled == false)
         {
             /* Get new joint angle values from ExcavatorData classes 
             // For testing purposes the datas are taken from sliders, on real situation the parameters would look something like this:

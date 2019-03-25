@@ -1274,6 +1274,7 @@ MonoBehaviour:
   ZeroPoint: {fileID: 1616847253}
   Height: {fileID: 1473710276}
   Distance: {fileID: 757562258}
+  HomePageCanvas: {fileID: 1307727765}
   BoomSlider: {fileID: 2068486447}
   StickSlider: {fileID: 1374614227}
   BucketSlider: {fileID: 1134012843}
