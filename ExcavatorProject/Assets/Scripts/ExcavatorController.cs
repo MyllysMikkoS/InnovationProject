@@ -29,6 +29,7 @@ public class ExcavatorController : MonoBehaviour
     float CurrentBucketAngle;
 
     float updateInterval = 0.05f; // test interval in seconds for 20 data updates per second
+    float lerpValue = 0.01f; // The smaller, the smoother the movement but the more delay
     float nextDataUpdate; // test variable
     // Start is called before the first frame update
     void Start()
@@ -72,9 +73,17 @@ public class ExcavatorController : MonoBehaviour
 
     public void SetExcavatorAngles()
     {
+        float boomAngle = Mathf.LerpAngle(Boom.transform.localEulerAngles.z, 360 - CurrentBoomAngle, Time.time * lerpValue);
+        Boom.transform.localEulerAngles = new Vector3(0, 0, boomAngle);
+        float stickAngle = Mathf.LerpAngle(Stick.transform.localEulerAngles.z, 360 - CurrentStickAngle, Time.time * lerpValue);
+        Stick.transform.localEulerAngles = new Vector3(0, 0, stickAngle);
+        float bucketAngle = Mathf.LerpAngle(Bucket.transform.localEulerAngles.z, 360 - CurrentBucketAngle, Time.time * lerpValue);
+        Bucket.transform.localEulerAngles = new Vector3(0, 0, bucketAngle);
+
+        /*
         Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
         Stick.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentStickAngle);
-        Bucket.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBucketAngle);
+        Bucket.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBucketAngle);*/
     }
 
     /// <summary>
