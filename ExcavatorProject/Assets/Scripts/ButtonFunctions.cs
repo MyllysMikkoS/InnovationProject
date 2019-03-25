@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ButtonFunctions : MonoBehaviour
 {
+    public Canvas HomePageCanvas;
 
     CanListener canListener;
     private Button webSoccetButton;
@@ -18,7 +15,7 @@ public class ButtonFunctions : MonoBehaviour
     void Start()
     {
         canListener = CanListener.Instance;
-        webSoccetButton = GameObject.Find("WebSoccetButton").GetComponent<Button>();
+        webSoccetButton = GameObject.Find("WebSocketButton").GetComponent<Button>();
         webSoccetButton.GetComponent<Image>().color = Color.red;
     }
 
@@ -37,8 +34,8 @@ public class ButtonFunctions : MonoBehaviour
 
         public void ChangeToExcavatorView()
     {
-        if(canListener.isConnected())
-            SceneManager.LoadScene(1);
+        if (canListener.isConnected())
+            HomePageCanvas.gameObject.SetActive(false);
     }
 
     public void ConnectToWebSoccet()
@@ -50,21 +47,5 @@ public class ButtonFunctions : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
-    }
-
-    private void OnApplicationPause(bool pause)
-    {
-        if (pause)
-        {
-            Debug.Log("PAUSE MAIN");
-            canListener.stop();
-        }
-
-    }
-
-    private void OnApplicationQuit()
-    {
-        Debug.Log("QUIT MAIN");
-        canListener.stop();
     }
 }

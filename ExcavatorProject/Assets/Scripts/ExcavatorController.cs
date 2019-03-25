@@ -41,7 +41,7 @@ public class ExcavatorController : MonoBehaviour
         UpdateAngleData(BoomAngleZero, StickAngleZero, BucketAngleZero);
 
         SetExcavatorAngles();
-        Debug.Log("ExcavatorController scene");
+        //Debug.Log("ExcavatorController scene");
     }
 
     // Update is called once per frame
