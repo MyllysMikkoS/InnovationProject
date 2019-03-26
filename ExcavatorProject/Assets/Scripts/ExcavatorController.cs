@@ -83,8 +83,8 @@ public class ExcavatorController : MonoBehaviour
         float bucketAngle = Mathf.LerpAngle(Bucket.transform.localEulerAngles.z, 360 - CurrentBucketAngle, Time.time * lerpValue);
         Bucket.transform.localEulerAngles = new Vector3(0, 0, bucketAngle);
 
-        /*
-        Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
+        
+        /*Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
         Stick.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentStickAngle);
         Bucket.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBucketAngle);*/
     }

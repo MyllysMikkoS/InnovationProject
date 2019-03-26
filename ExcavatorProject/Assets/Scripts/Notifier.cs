@@ -157,7 +157,6 @@ internal class Data
     private void parse386(string message)
     {
         string[] values = message.Split('.');
-
         int length = values.Length;
         if (length > 1)
             bucketAngleGround[0] = convertToDegrees(Convert.ToInt32(values[1]));
@@ -168,7 +167,7 @@ internal class Data
 
     private void parse388(string message)
     {
-        //Debug.Log("388: " + message);
+        Debug.Log("388: " + message);
         string[] values = message.Split('.');
         int length = values.Length;
         if (length > 0)
@@ -195,7 +194,7 @@ internal class Data
 
     private void parse389(string message)
     {
-        //Debug.Log("389: " + message);
+        Debug.Log("389: " + message);
         string[] values = message.Split('.');
         int length = values.Length;
 
@@ -261,22 +260,22 @@ internal class Data
     float convertBoom(float boomOne, float boomTwo)
     {
         //Debug.Log("BOOMONE: " + boomOne + " BOOMTWO: " + boomTwo);
-        return (float)((256 * boomTwo) + boomOne) / 10;
+        return (float)((256 * boomTwo) + boomOne) / 10 - 5;
     }
 
     float convertArm(float armOne, float armTwo)
     {
         //Debug.Log("ARMONE: " + armOne + " ARMTWO: " + armTwo);
-        return (float)((((256 * armTwo) + armOne) - 64058) / 10) - 64.35f;
+        return (float)((((256 * armTwo) + armOne) - 64058) / 10) - 138f;
     }
 
     float convertBucket(float bucketOne, float bucketTwo)
     {
         //Debug.Log("BUCKETONE: " + bucketOne + " BUCKETTWO: " + bucketTwo);
         if (bucketTwo > 2)
-            return (float)(((256 * bucketTwo) + bucketOne) - 65536) / 10;
+            return (float)(((256 * bucketTwo) + bucketOne) - 65536) / 10 - 10;
         else
-            return (float)((256 * bucketTwo) + bucketOne) / 10;
+            return (float)((256 * bucketTwo) + bucketOne) / 10 -10;
     }
 
     private void parse393(string message)
