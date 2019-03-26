@@ -22,7 +22,7 @@ public class CanListener
     {
         Debug.Log("CanListener initialized");
         var nf = new Notifier();
-        m_socket = new WebSocketSharp.WebSocket("ws://localhost:8765");
+        m_socket = new WebSocketSharp.WebSocket("ws://192.168.43.161:8765");
         m_socket.OnMessage += (sender, e) =>
         {
             //Debug.Log("CanListener OnMessage sender: " + sender + "\nCanListener OnMessage e: " + e.Data);
