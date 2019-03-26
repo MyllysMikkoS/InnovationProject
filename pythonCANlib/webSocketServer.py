@@ -34,7 +34,7 @@ if __name__ == '__main__':
     host = ''
     port = 8765
 
-    if len(sys.argv) >= 2:
+    if len(sys.argv) >= 2:	
         host, port = sys.argv[1].split(":")
         port = int(port)
 
