@@ -167,9 +167,16 @@ internal class Data
 
     private void parse388(string message)
     {
-        Debug.Log("388: " + message);
+
+        //Debug.Log("388: " + message);
         string[] values = message.Split('.');
         int length = values.Length;
+        if(length == 8)
+        {
+            ExcavatorData388.Instance.setData(turnToFloat(new string[4] { values[0], values[1], values[2], values[3] }, "388 1"),
+            turnToFloat(new string[4] { values[4], values[5], values[6], values[7] }, "388 2"));
+        }
+        /*
         if (length > 0)
             heightFromZero[0] = convertToDegrees(Convert.ToInt32(values[0]));
         if (length > 1)
@@ -188,16 +195,21 @@ internal class Data
             distanceFromZero[3] = convertToDegrees(Convert.ToInt32(values[7]));
 
         ExcavatorData388.Instance.setData(heightFromZero, distanceFromZero);
+        */
         //Debug.Log("heightFromZero: " + heightFromZero[0] + ", " + heightFromZero[1] + ", " + heightFromZero[2] + ", " + heightFromZero[3] +
         //    "\ndistanceFromZero" + distanceFromZero[0] + ", " + distanceFromZero[1] + ", " + distanceFromZero[2] + ", " + distanceFromZero[3]);
     }
 
     private void parse389(string message)
     {
-        Debug.Log("389: " + message);
+        //Debug.Log("389: " + message);
         string[] values = message.Split('.');
         int length = values.Length;
-
+        if (length == 4)
+        {
+            ExcavatorData389.Instance.setData(turnToFloat(new string[4] { values[0], values[1], values[2], values[3] }, "389"));
+        }
+        /*
         if (length > 0)
             heightToSlopeFromZero[0] = convertToDegrees(Convert.ToInt32(values[0]));
         if (length > 1)
@@ -206,10 +218,28 @@ internal class Data
             heightToSlopeFromZero[2] = convertToDegrees(Convert.ToInt32(values[2]));
         if (length > 3)
             heightToSlopeFromZero[3] = convertToDegrees(Convert.ToInt32(values[3]));
-
+        
         ExcavatorData389.Instance.setData(heightToSlopeFromZero);
+        */
         //Debug.Log("heightToSlopeFromZero: " + heightToSlopeFromZero[0] + ", " + heightToSlopeFromZero[1] + ", " + heightToSlopeFromZero[2] + ", " + heightToSlopeFromZero[3]);
 
+    }
+
+
+
+    private float turnToFloat(string[] msg, string debugMsg)
+    {
+
+        string hexValue1 = (Convert.ToInt32(msg[0])).ToString("X");
+        string hexValue2 = (Convert.ToInt32(msg[1])).ToString("X");
+        string hexValue3 = (Convert.ToInt32(msg[2])).ToString("X");
+        string hexValue4 = (Convert.ToInt32(msg[3])).ToString("X");
+
+        uint num = uint.Parse(hexValue4 + hexValue3 + hexValue2 + hexValue1, System.Globalization.NumberStyles.AllowHexSpecifier);
+        byte[] floatVals = BitConverter.GetBytes(num);
+        float f = BitConverter.ToSingle(floatVals, 0);
+        Debug.Log(debugMsg + ": " + f);
+        return f;
     }
 
     private void parse392(string message)

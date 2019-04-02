@@ -33,8 +33,8 @@ class ExcavatorData386
 
 class ExcavatorData388
 {
-    private float[] heightFromZero = new float[4] { 0, 0, 0, 0 };
-    private float[] distanceFromZero = new float[4] { 0, 0, 0, 0 };
+    private float heightFromZero = 0;
+    private float distanceFromZero = 0;
     private readonly object lock388 = new object();
 
     private static readonly Lazy<ExcavatorData388> lazy =
@@ -43,7 +43,7 @@ class ExcavatorData388
 
     public static ExcavatorData388 Instance { get { return lazy.Value; } }
 
-    public void setData(float[] height, float[] distance)
+    public void setData(float height, float distance)
     {
         lock (lock388)
         {
@@ -52,13 +52,13 @@ class ExcavatorData388
         }
     }
 
-    public float[] getHeight()
+    public float getHeight()
     {
         lock (lock388)
             return heightFromZero;
     }
 
-    public float[] getDistance()
+    public float getDistance()
     {
         lock (lock388)
             return distanceFromZero;
@@ -67,7 +67,7 @@ class ExcavatorData388
 
 class ExcavatorData389
 {
-    private float[] heightToSlopeFromZero = new float[4] { 0, 0, 0, 0 };
+    private float heightToSlopeFromZero = 0;
     private readonly object lock389 = new object();
 
 
@@ -77,7 +77,7 @@ class ExcavatorData389
 
     public static ExcavatorData389 Instance { get { return lazy.Value; } }
 
-    public void setData(float[] height)
+    public void setData(float height)
     {
         lock (lock389)
         {
@@ -85,7 +85,7 @@ class ExcavatorData389
         }
     }
 
-    public float[] getHeight()
+    public float getHeight()
     {
         lock (lock389)
             return heightToSlopeFromZero;

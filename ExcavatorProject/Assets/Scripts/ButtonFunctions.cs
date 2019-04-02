@@ -32,7 +32,7 @@ public class ButtonFunctions : MonoBehaviour
         }
     }
 
-        public void ChangeToExcavatorView()
+    public void ChangeToExcavatorView()
     {
         if (canListener.isConnected())
             HomePageCanvas.gameObject.SetActive(false);
