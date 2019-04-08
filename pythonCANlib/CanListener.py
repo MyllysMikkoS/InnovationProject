@@ -22,6 +22,8 @@ class CanListener:
 
             # Set node to operational state
             self.__send_start_signal()
+            self.__send_reset_zero_level_signal()
+            self.__set_angle_data_interval(100)
 
             # Start thread for listen client messages
             if self.listenClient:
@@ -56,9 +58,15 @@ class CanListener:
         self.channel.write(frame)
 
     def __send_reset_zero_level_signal(self):
-        # COB-id: 0x60A, Byte 1: initiating download, index: 0x2020, sub index: 2
+        # COB-id: 0x60A, Byte 1: initiating download, 3 empty bytes, index: 0x2020, sub index: 2
         frame = Frame(id_=1546, data=[int('00101111', 2), 32, 32, 2, 1, 0, 0, 0], dlc=8, flags=0)
         self.channel.write(frame)
+
+    def __set_angle_data_interval(self, ms):
+        if 0 <= ms < 256:
+            # COB-id: 0x60A, Byte 1: initiating download, 2 empty bytes, index: 0x1808, sub index: 5
+            frame = Frame(id_=1546, data=[int('00101011', 2), 8, 24, 5, ms, 0, 0, 0], dlc=8, flags=0)
+            self.channel.write(frame)
 
     def __dump_message(self, id, msg, dlc, flag, time):
         if flag & canlib.canMSG_ERROR_FRAME != 0:
