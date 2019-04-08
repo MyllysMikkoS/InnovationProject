@@ -116,8 +116,8 @@ public class ExcavatorController : MonoBehaviour
         position.x -= 2f;
         position.y += 1.3f;
         Distance.transform.position = position;
-        float HeightValue = (TipPoint.transform.position.y - ZeroPoint.transform.position.y) * 1.25f;
-        float DistanceValue = (TipPoint.transform.position.x - ZeroPoint.transform.position.x) * -1.25f;
+        float HeightValue = ExcavatorData389.Instance.getHeight(); //(TipPoint.transform.position.y - ZeroPoint.transform.position.y) * 1.25f;
+        float DistanceValue = ExcavatorData388.Instance.getDistance(); //(TipPoint.transform.position.x - ZeroPoint.transform.position.x) * -1.25f;
         Height.text = HeightValue.ToString("0.00") + " m";
         Distance.text = DistanceValue.ToString("0.00") + " m";
     }
