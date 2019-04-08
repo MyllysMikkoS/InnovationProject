@@ -10,6 +10,7 @@ public class CanListener
     // Start is called before the first frame update
     WebSocketSharp.WebSocket m_socket;
 
+    private String IPAddress = "localhost";
     private Boolean m_isConnected = false;
 
     private static readonly Lazy<CanListener> lazy =
@@ -22,7 +23,7 @@ public class CanListener
     {
         Debug.Log("CanListener initialized");
         var nf = new Notifier();
-        m_socket = new WebSocketSharp.WebSocket("ws://localhost:8765");
+        m_socket = new WebSocketSharp.WebSocket("ws://" + IPAddress + ":8765");
         m_socket.OnMessage += (sender, e) =>
         {
             //Debug.Log("CanListener OnMessage sender: " + sender + "\nCanListener OnMessage e: " + e.Data);
@@ -77,7 +78,11 @@ public class CanListener
         };
 
     }
-
+     
+    public void setIPAdress(String ipAddress)
+    {
+        IPAddress = ipAddress;
+    }
 
     public void connect()
     {

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
     public Canvas HomePageCanvas;
+    public InputField IPAddressInputField;
 
     CanListener canListener;
     private Button webSoccetButton;
@@ -40,7 +41,8 @@ public class ButtonFunctions : MonoBehaviour
 
     public void ConnectToWebSoccet()
     {
-        if(!canListener.isConnected())
+        if (!canListener.isConnected())
+            canListener.setIPAdress(IPAddressInputField.text); 
             canListener.connect();
     }
 
