@@ -24,10 +24,13 @@ public class ButtonFunctions : MonoBehaviour
     {
         if (Time.time >= nextDataUpdate)
         {
+            if(canListener != null)
+            {
             if(isConnectedToWebSocket != canListener.isConnected())
             {
                 isConnectedToWebSocket = canListener.isConnected();
                 webSoccetButton.GetComponent<Image>().color = canListener.isConnected() ? Color.green : Color.red;
+            }
             }
             nextDataUpdate = Time.time + updateInterval;
         }
@@ -41,9 +44,14 @@ public class ButtonFunctions : MonoBehaviour
 
     public void ConnectToWebSoccet()
     {
+        if(canListener != null)
+        {
         if (!canListener.isConnected())
-            canListener.setIPAdress(IPAddressInputField.text); 
+        {
+            canListener.setIPAdress(IPAddressInputField.text);
             canListener.connect();
+        }
+        }
     }
 
     public void Quit()

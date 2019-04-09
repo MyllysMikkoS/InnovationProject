@@ -25,13 +25,14 @@ public class ExcavatorController : MonoBehaviour
     public float StickAngleZero;
     public float BucketAngleZero;
 
-    float CurrentBoomAngle;
-    float CurrentStickAngle;
-    float CurrentBucketAngle;
+    static float CurrentBoomAngle;
+    static float CurrentStickAngle;
+    static float CurrentBucketAngle;
 
     float updateInterval = 0.05f; // test interval in seconds for 20 data updates per second
-    float lerpValue = 0.01f; // The smaller, the smoother the movement but the more delay
+    float lerpValue = 1;//0.02f; // The smaller, the smoother the movement but the more delay
     float nextDataUpdate; // test variable
+    float nextUpdt = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -51,27 +52,33 @@ public class ExcavatorController : MonoBehaviour
     void Update()
     {
         // for testing update angle every 50ms => 20 times per second
-        if (Time.time >= nextDataUpdate && HomePageCanvas.isActiveAndEnabled == false)
-        {
+        //if (Time.time >= nextDataUpdate && HomePageCanvas.isActiveAndEnabled == false)
+        //{
             /* Get new joint angle values from ExcavatorData classes 
             // For testing purposes the datas are taken from sliders, on real situation the parameters would look something like this:
             */
-            if (CanListener.Instance.isConnected())
-                UpdateAngleData(ExcavatorData392.Instance.getBoom(), ExcavatorData392.Instance.getArm(), ExcavatorData392.Instance.getBucket());
-            else
-                SceneManager.LoadScene(0);
+         //   if (CanListener.Instance.isConnected())
+       //         Debug.Log("asd");//UpdateAngleData(ExcavatorData392.Instance.getBoom(), ExcavatorData392.Instance.getArm(), ExcavatorData392.Instance.getBucket());
+      //      else
+     //           SceneManager.LoadScene(0);
             //if(CanListener.Instance.isConnected())
             //    UpdateAngleData(BoomSlider.GetComponent<Slider>().value, StickSlider.GetComponent<Slider>().value, BucketSlider.GetComponent<Slider>().value);
             //else
             //    SceneManager.LoadScene(0);
-                nextDataUpdate = Time.time + updateInterval;
-        }
+      //          nextDataUpdate = Time.time + updateInterval;
+     //   }
 
         // Update Excavator model on UI every frame
         SetExcavatorAngles();
 
         // Update distance texts
         SetDistanceTexts();
+
+        if (Time.time >= nextUpdt)
+        {
+            //Debug.Log("------------" + Time.time + "-------------");
+            nextUpdt = Time.time + 1;
+        }
     }
 
     public void SetExcavatorAngles()
@@ -83,6 +90,7 @@ public class ExcavatorController : MonoBehaviour
         float bucketAngle = Mathf.LerpAngle(Bucket.transform.localEulerAngles.z, 360 - CurrentBucketAngle, Time.time * lerpValue);
         Bucket.transform.localEulerAngles = new Vector3(0, 0, bucketAngle);
 
+        //Debug.Log(Time.time + " " + CurrentBoomAngle + " - " + CurrentStickAngle + " - " + CurrentBucketAngle);
         
         /*Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
         Stick.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentStickAngle);
@@ -95,7 +103,7 @@ public class ExcavatorController : MonoBehaviour
     /// <param name="BoomAngle"></param>
     /// <param name="StickAngle"></param>
     /// <param name="BucketAngle"></param>
-    public void UpdateAngleData(float BoomAngle, float StickAngle, float BucketAngle) // For example BoomAngle = 30, StickAngle = -15 and BucketAngle = -45
+    public static void UpdateAngleData(float BoomAngle, float StickAngle, float BucketAngle) // For example BoomAngle = 30, StickAngle = -15 and BucketAngle = -45
     {
         CurrentBoomAngle = BoomAngle;
         CurrentStickAngle = StickAngle;
@@ -126,14 +134,14 @@ public class ExcavatorController : MonoBehaviour
     {
         if (pause)
         {
-            Debug.Log("PAUSE MAIN");
+            //Debug.Log("PAUSE MAIN");
             CanListener.Instance.stop();
         }
     }
 
     private void OnApplicationQuit()
     {
-        Debug.Log("QUIT MAIN");
+        //Debug.Log("QUIT MAIN");
         CanListener.Instance.stop();
     }
 }

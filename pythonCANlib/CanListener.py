@@ -23,7 +23,7 @@ class CanListener:
             # Set node to operational state
             self.__send_start_signal()
             self.__send_reset_zero_level_signal()
-            self.__set_angle_data_interval(100)
+            self.__set_angle_data_interval(10)
 
             # Start thread for listen client messages
             if self.listenClient:

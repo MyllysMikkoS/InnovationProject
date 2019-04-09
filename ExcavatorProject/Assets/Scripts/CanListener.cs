@@ -21,9 +21,14 @@ public class CanListener
 
     private CanListener()
     {
-        Debug.Log("CanListener initialized");
-        var nf = new Notifier();
+        //Debug.Log("CanListener initialized");
+    }
+     
+    public void setIPAdress(String ipAddress)
+    {
+        IPAddress = ipAddress;
         m_socket = new WebSocketSharp.WebSocket("ws://" + IPAddress + ":8765");
+        var nf = new Notifier();
         m_socket.OnMessage += (sender, e) =>
         {
             //Debug.Log("CanListener OnMessage sender: " + sender + "\nCanListener OnMessage e: " + e.Data);
@@ -42,7 +47,7 @@ public class CanListener
         };
         m_socket.OnOpen += (sender, e) =>
         {
-            Debug.Log("CanListener OnOpen sender: " + e.ToString());
+            //Debug.Log("CanListener OnOpen sender: " + e.ToString());
             m_isConnected = true;
             nf.Notify(
                     new NotificationMessage
@@ -54,7 +59,7 @@ public class CanListener
         };
         m_socket.OnError += (sender, e) =>
         {
-            Debug.Log("CanListener OnError sender: " + e.Message + e.GetType());
+            //Debug.Log("CanListener OnError sender: " + e.Message + e.GetType());
             nf.Notify(
                 new NotificationMessage
                 {
@@ -66,7 +71,7 @@ public class CanListener
         };
         m_socket.OnClose += (sender, e) =>
         {
-            Debug.Log("CanListener OnClose sender: " + e.Reason + e.Code);
+            //Debug.Log("CanListener OnClose sender: " + e.Reason + e.Code);
             m_isConnected = false;
             nf.Notify(
                 new NotificationMessage
@@ -76,12 +81,6 @@ public class CanListener
                 });
 
         };
-
-    }
-     
-    public void setIPAdress(String ipAddress)
-    {
-        IPAddress = ipAddress;
     }
 
     public void connect()

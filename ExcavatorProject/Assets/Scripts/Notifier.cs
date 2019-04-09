@@ -31,7 +31,6 @@ internal class Notifier : IDisposable
                     {
                         if (msg.Parse)
                         {
-                            //Debug.Log(msg);
                             string[] message = msg.Body.Split(':');
                             _data.parseMessage(message[0], message[1]);
                         }
@@ -50,14 +49,14 @@ internal class Notifier : IDisposable
     {
         get
         {
-            lock (_sync)
+            //lock (_sync)
                 return _queue.Count;
         }
     }
 
     private NotificationMessage dequeue()
     {
-        lock (_sync)
+        //lock (_sync)
             return _queue.Count > 0 ? _queue.Dequeue() : null;
     }
 
@@ -70,7 +69,7 @@ internal class Notifier : IDisposable
 
     public void Notify(NotificationMessage message)
     {
-        lock (_sync)
+        //lock (_sync)
         {
             if (_enabled)
                 _queue.Enqueue(message);
@@ -109,6 +108,7 @@ internal class NotificationMessage
 
 internal class Data
 {
+    int temp = 0;
     private float[] bucketAngleGround = new float[2] { 0, 0 };
     private float[] bucketAngle = new float[2] { 0, 0 };
     private float[] boomAngle = new float[2] { 0, 0 };
@@ -238,7 +238,7 @@ internal class Data
         uint num = uint.Parse(hexValue4 + hexValue3 + hexValue2 + hexValue1, System.Globalization.NumberStyles.AllowHexSpecifier);
         byte[] floatVals = BitConverter.GetBytes(num);
         float f = BitConverter.ToSingle(floatVals, 0);
-        Debug.Log(debugMsg + ": " + f);
+        //Debug.Log(debugMsg + ": " + f);
         return f;
     }
 
@@ -246,6 +246,8 @@ internal class Data
     {
         string[] values = message.Split('.');
         int length = values.Length;
+        temp++;
+        //Debug.Log(temp + "----------------------");
         //Debug.Log(message);
         /*
         if (length > 0)
@@ -281,10 +283,15 @@ internal class Data
         {
             bucketAngle[0] = Convert.ToInt32(values[4]);
             bucketAngle[1] = Convert.ToInt32(values[5]);
+
             ExcavatorData392.Instance.setBucket(convertBucket(bucketAngle[0], bucketAngle[1]));
         }
         //Debug.Log("boomAngle: " + (int)boomAngle[0] + ", " + (int)boomAngle[1] + "\narmAngle " + (int)armAngle[0] + ", " + (int)armAngle[1] +
         //    "\nbucketAngle" + (int)bucketAngle[0] + ", " + (int)bucketAngle[1] + "\nheadingAngle " + (int)headingAngle[0] + ", " + (int)headingAngle[1]);
+
+        ExcavatorController.UpdateAngleData(ExcavatorData392.Instance.getBoom(), ExcavatorData392.Instance.getArm(), ExcavatorData392.Instance.getBucket());
+        //Debug.Log(ExcavatorData392.Instance.getBoom() + " - " + ExcavatorData392.Instance.getArm() + " - " + ExcavatorData392.Instance.getBucket());
+
     }
 
     float convertBoom(float boomOne, float boomTwo)
