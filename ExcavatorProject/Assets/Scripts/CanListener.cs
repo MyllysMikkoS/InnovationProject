@@ -96,8 +96,23 @@ public class CanListener
 
     public void sendResetMessage()
     {
+        // RZL
         byte[] test = { 82, 90, 76 };
         m_socket.Send(test);
+    }
+
+    public void setSlopeLevel(String slope)
+    {
+        if (slope.Length < 10) {
+            byte[] keyBytes = { 83, 76, 79, 58 }; // SLO:
+            byte[] slopeBytes = System.Text.Encoding.ASCII.GetBytes(slope);
+
+            var bytes = new byte[keyBytes.Length + slopeBytes.Length];
+            keyBytes.CopyTo(bytes, 0);
+            slopeBytes.CopyTo(bytes, keyBytes.Length);
+
+            m_socket.Send(bytes);
+        }
     }
 
     public void stop()

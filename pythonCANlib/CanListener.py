@@ -1,6 +1,7 @@
 import signal
 import sys
 import threading
+import struct
 from canlib import canlib, Frame
 from websocket import create_connection, WebSocketConnectionClosedException
 
@@ -68,6 +69,16 @@ class CanListener:
             frame = Frame(id_=1546, data=[int('00101011', 2), 8, 24, 5, ms, 0, 0, 0], dlc=8, flags=0)
             self.channel.write(frame)
 
+    def __set_slope_level(self, msg):
+        try:
+            slope = float(msg.split(":", 1)[1])
+            if 0 <= slope <= 100:
+                ba = bytearray(struct.pack("f", slope))
+                frame = Frame(id_=1546, data=[int('00100011', 2), 32, 32, 1, ba[0], ba[1], ba[2], ba[3]], dlc=8, flags=0)
+                self.channel.write(frame)
+        except ValueError:
+            pass
+
     def __dump_message(self, id, msg, dlc, flag, time):
         if flag & canlib.canMSG_ERROR_FRAME != 0:
             print("***ERROR FRAME RECEIVED***")
@@ -101,13 +112,13 @@ class CanListener:
 
                     try:
                         id, msg, dlc, flag, time = self.channel.read()
-                    except canlib.canNoMsg as ex:
+                    except canlib.canNoMsg:
                         has_message = False
                     except canlib.canError as ex:
                         print(ex)
                         finished = True
-            except canlib.canNoMsg as ex:
-                None
+            except canlib.canNoMsg:
+                pass
             except canlib.canError as ex:
                 print(ex)
                 finished = True
@@ -118,7 +129,8 @@ class CanListener:
                 result = self.webSocket.recv()
                 if result == 'RZL':
                     self.__send_reset_zero_level_signal()
-                    print result
+                elif result.startswith('SLO:'):
+                    self.__set_slope_level(result)
             except WebSocketConnectionClosedException:
                 self.listenClient = False
 
