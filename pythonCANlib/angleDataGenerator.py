@@ -64,7 +64,7 @@ if __name__ == '__main__':
     data_source_file = 'angleData.txt'
     # ids_to_read = ('386', '388', '389', '392', '393')
     ids_to_read = '392'
-    message_interval = 0.1
+    message_interval = 0.01
 
     generator = AngleDataGenerator()
     generator.generate(data_source_file, message_interval, ids_to_read)
