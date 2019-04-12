@@ -61,7 +61,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, exit_gracefully)
     signal.signal(signal.SIGTERM, exit_gracefully)
 
-    data_source_file = 'angleData.txt'
+    data_source_file = 'canData.txt'
     # ids_to_read = ('386', '388', '389', '392', '393')
     ids_to_read = '392'
     message_interval = 0.01
