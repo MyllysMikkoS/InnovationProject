@@ -13,6 +13,7 @@ public class ButtonFunctions : MonoBehaviour
     float nextDataUpdate;
     private Boolean isConnectedToWebSocket = false;
 
+
     void Start()
     {
         canListener = CanListener.Instance;

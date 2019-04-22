@@ -29,72 +29,35 @@ public class ExcavatorController : MonoBehaviour
     static float CurrentStickAngle;
     static float CurrentBucketAngle;
 
-    float updateInterval = 0.05f; // test interval in seconds for 20 data updates per second
-    float lerpValue = 1;//0.02f; // The smaller, the smoother the movement but the more delay
-    float nextDataUpdate; // test variable
-    float nextUpdt = 0;
-    // Start is called before the first frame update
+    public static bool angleLock;
+
+
     void Start()
     {
-        /*CurrentBoomAngle = BoomAngleZero;
-        CurrentStickAngle = StickAngleZero;
-        CurrentBucketAngle = BucketAngleZero;*/
         if(HomePageCanvas.isActiveAndEnabled == false)
         {
             UpdateAngleData(BoomAngleZero, StickAngleZero, BucketAngleZero);
 
             SetExcavatorAngles();
         }
-        //Debug.Log("ExcavatorController scene");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // for testing update angle every 50ms => 20 times per second
-        //if (Time.time >= nextDataUpdate && HomePageCanvas.isActiveAndEnabled == false)
-        //{
-            /* Get new joint angle values from ExcavatorData classes 
-            // For testing purposes the datas are taken from sliders, on real situation the parameters would look something like this:
-            */
-         //   if (CanListener.Instance.isConnected())
-       //         Debug.Log("asd");//UpdateAngleData(ExcavatorData392.Instance.getBoom(), ExcavatorData392.Instance.getArm(), ExcavatorData392.Instance.getBucket());
-      //      else
-     //           SceneManager.LoadScene(0);
-            //if(CanListener.Instance.isConnected())
-            //    UpdateAngleData(BoomSlider.GetComponent<Slider>().value, StickSlider.GetComponent<Slider>().value, BucketSlider.GetComponent<Slider>().value);
-            //else
-            //    SceneManager.LoadScene(0);
-      //          nextDataUpdate = Time.time + updateInterval;
-     //   }
-
         // Update Excavator model on UI every frame
         SetExcavatorAngles();
 
         // Update distance texts
         SetDistanceTexts();
-
-        if (Time.time >= nextUpdt)
-        {
-            //Debug.Log("------------" + Time.time + "-------------");
-            nextUpdt = Time.time + 1;
-        }
     }
 
     public void SetExcavatorAngles()
-    {
-        float boomAngle = Mathf.LerpAngle(Boom.transform.localEulerAngles.z, 360 - CurrentBoomAngle, Time.time * lerpValue);
-        Boom.transform.localEulerAngles = new Vector3(0, 0, boomAngle);
-        float stickAngle = Mathf.LerpAngle(Stick.transform.localEulerAngles.z, 360 - CurrentStickAngle, Time.time * lerpValue);
-        Stick.transform.localEulerAngles = new Vector3(0, 0, stickAngle);
-        float bucketAngle = Mathf.LerpAngle(Bucket.transform.localEulerAngles.z, 360 - CurrentBucketAngle, Time.time * lerpValue);
-        Bucket.transform.localEulerAngles = new Vector3(0, 0, bucketAngle);
-
-        //Debug.Log(Time.time + " " + CurrentBoomAngle + " - " + CurrentStickAngle + " - " + CurrentBucketAngle);
-        
-        /*Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
+    {    
+        Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
         Stick.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentStickAngle);
-        Bucket.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBucketAngle);*/
+        Bucket.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBucketAngle);
+
+        angleLock = false;
     }
 
     /// <summary>
@@ -108,6 +71,8 @@ public class ExcavatorController : MonoBehaviour
         CurrentBoomAngle = BoomAngle;
         CurrentStickAngle = StickAngle;
         CurrentBucketAngle = BucketAngle;
+
+        angleLock = true;
     }
 
     public void SetZeroPoint()
@@ -124,8 +89,8 @@ public class ExcavatorController : MonoBehaviour
         position.x -= 2f;
         position.y += 1.3f;
         Distance.transform.position = position;
-        float HeightValue = ExcavatorData389.Instance.getHeight(); //(TipPoint.transform.position.y - ZeroPoint.transform.position.y) * 1.25f;
-        float DistanceValue = ExcavatorData388.Instance.getDistance(); //(TipPoint.transform.position.x - ZeroPoint.transform.position.x) * -1.25f;
+        float HeightValue = ExcavatorData389.Instance.getHeight();
+        float DistanceValue = ExcavatorData388.Instance.getDistance();
         Height.text = HeightValue.ToString("0.00") + " m";
         Distance.text = DistanceValue.ToString("0.00") + " m";
     }
@@ -134,14 +99,12 @@ public class ExcavatorController : MonoBehaviour
     {
         if (pause)
         {
-            //Debug.Log("PAUSE MAIN");
             CanListener.Instance.stop();
         }
     }
 
     private void OnApplicationQuit()
     {
-        //Debug.Log("QUIT MAIN");
         CanListener.Instance.stop();
     }
 }

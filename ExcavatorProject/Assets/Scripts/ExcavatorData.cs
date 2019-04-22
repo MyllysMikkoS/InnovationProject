@@ -13,8 +13,8 @@ class ExcavatorData386
     private static readonly Lazy<ExcavatorData386> lazy =
         new Lazy<ExcavatorData386>(() => new ExcavatorData386());
 
-
     public static ExcavatorData386 Instance { get { return lazy.Value; } }
+
 
     public void setData(float[] bucket)
     {
@@ -40,8 +40,8 @@ class ExcavatorData388
     private static readonly Lazy<ExcavatorData388> lazy =
     new Lazy<ExcavatorData388>(() => new ExcavatorData388());
 
-
     public static ExcavatorData388 Instance { get { return lazy.Value; } }
+
 
     public void setData(float height, float distance)
     {
@@ -70,12 +70,11 @@ class ExcavatorData389
     private float heightToSlopeFromZero = 0;
     private readonly object lock389 = new object();
 
-
     private static readonly Lazy<ExcavatorData389> lazy =
     new Lazy<ExcavatorData389>(() => new ExcavatorData389());
 
-
     public static ExcavatorData389 Instance { get { return lazy.Value; } }
+
 
     public void setData(float height)
     {
@@ -101,19 +100,17 @@ class ExcavatorData392
     private float[] headingAngle = new float[2] { 0, 0 };
     private readonly object lock392 = new object();
 
+    private static readonly Lazy<ExcavatorData392> lazy =
+    new Lazy<ExcavatorData392>(() => new ExcavatorData392());
 
-private static readonly Lazy<ExcavatorData392> lazy =
-new Lazy<ExcavatorData392>(() => new ExcavatorData392());
+    public static ExcavatorData392 Instance { get { return lazy.Value; } }
 
 
-public static ExcavatorData392 Instance { get { return lazy.Value; } }
-
-public void setBoom(float boom)
+    public void setBoom(float boom)
     {
         lock (lock392)
         {
             boomAngle = boom;
-            //Debug.Log("BOOM: " + boomAngle);
         }
     }
 
@@ -122,17 +119,17 @@ public void setBoom(float boom)
         lock (lock392)
         {
             armAngle = arm;
-            //Debug.Log("ARM: " + armAngle);
         }
     }
+
     public void setBucket(float bucket)
     {
         lock (lock392)
         {
             bucketAngle = bucket;
-            //Debug.Log("BUCKET: " + bucketAngle);
         }
     }
+
     public float getBoom()
     {
         lock (lock392)
@@ -161,9 +158,10 @@ class ExcavatorData393
     private static readonly Lazy<ExcavatorData393> lazy =
     new Lazy<ExcavatorData393>(() => new ExcavatorData393());
 
-
     public static ExcavatorData393 Instance { get { return lazy.Value; } }
-public void setData(float[] pitch, float[] roll)
+
+
+    public void setData(float[] pitch, float[] roll)
     {
         lock (lock393)
         {

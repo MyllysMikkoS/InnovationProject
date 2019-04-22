@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class CanListener
 {
-    // Start is called before the first frame update
     WebSocketSharp.WebSocket m_socket;
 
     private String IPAddress = "localhost";
@@ -16,12 +15,12 @@ public class CanListener
     private static readonly Lazy<CanListener> lazy =
         new Lazy<CanListener>(() => new CanListener());
 
-
     public static CanListener Instance { get { return lazy.Value; } }
+
 
     private CanListener()
     {
-        //Debug.Log("CanListener initialized");
+
     }
      
     public void setIPAdress(String ipAddress)
@@ -29,13 +28,11 @@ public class CanListener
         IPAddress = ipAddress;
         m_socket = new WebSocketSharp.WebSocket("ws://" + IPAddress + ":8765");
         var nf = new Notifier();
+
         m_socket.OnMessage += (sender, e) =>
         {
-            //Debug.Log("CanListener OnMessage sender: " + sender + "\nCanListener OnMessage e: " + e.Data);
             if (e.Data.Length > 4)
             {
-                //string[] message = e.Data.Split(':');
-                //parseMessage(message[0], message[1]);
                 nf.Notify(
                     new NotificationMessage
                     {
@@ -45,9 +42,9 @@ public class CanListener
                     });
             }
         };
+
         m_socket.OnOpen += (sender, e) =>
         {
-            //Debug.Log("CanListener OnOpen sender: " + e.ToString());
             m_isConnected = true;
             nf.Notify(
                     new NotificationMessage
@@ -57,9 +54,9 @@ public class CanListener
                         Parse = false
                     });
         };
+
         m_socket.OnError += (sender, e) =>
         {
-            //Debug.Log("CanListener OnError sender: " + e.Message + e.GetType());
             nf.Notify(
                 new NotificationMessage
                 {
@@ -69,9 +66,9 @@ public class CanListener
                 });
 
         };
+
         m_socket.OnClose += (sender, e) =>
         {
-            //Debug.Log("CanListener OnClose sender: " + e.Reason + e.Code);
             m_isConnected = false;
             nf.Notify(
                 new NotificationMessage
@@ -85,7 +82,6 @@ public class CanListener
 
     public void connect()
     {
-        //if(!m_isConnected)
         m_socket.ConnectAsync();
     }
 
@@ -97,8 +93,8 @@ public class CanListener
     public void sendResetMessage()
     {
         // RZL
-        byte[] test = { 82, 90, 76 };
-        m_socket.Send(test);
+        byte[] bytes = { 82, 90, 76 };
+        m_socket.Send(bytes);
     }
 
     public void setSlopeLevel(String slope)
@@ -117,7 +113,6 @@ public class CanListener
 
     public void stop()
     {
-        //if(m_isConnected)
-            m_socket.Close();
+        m_socket.Close();
     }
 }
