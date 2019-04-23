@@ -16,11 +16,6 @@ public class ExcavatorController : MonoBehaviour
     public Text Distance;
     public Canvas HomePageCanvas;
 
-    // FOR TESTING
-    public GameObject BoomSlider;
-    public GameObject StickSlider;
-    public GameObject BucketSlider;
-
     public float BoomAngleZero;
     public float StickAngleZero;
     public float BucketAngleZero;
@@ -34,7 +29,7 @@ public class ExcavatorController : MonoBehaviour
 
     void Start()
     {
-        if(HomePageCanvas.isActiveAndEnabled == false)
+        if (HomePageCanvas.isActiveAndEnabled == false)
         {
             UpdateAngleData(BoomAngleZero, StickAngleZero, BucketAngleZero);
 
