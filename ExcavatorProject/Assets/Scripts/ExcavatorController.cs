@@ -99,7 +99,7 @@ public class ExcavatorController : MonoBehaviour
     {
         Slope.gameObject.SetActive(true);
         Slope.transform.position = TipPoint.transform.position;
-        Slope.transform.rotation = Quaternion.Euler(0, 0, -float.Parse(SlopeAngle.text));
+        Slope.transform.rotation = Quaternion.Euler(0, 0, float.Parse(SlopeAngle.text));
     }
 
     public void SetDistanceTexts()
