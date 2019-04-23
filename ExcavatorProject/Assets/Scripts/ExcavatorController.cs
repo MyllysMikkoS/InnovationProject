@@ -13,7 +13,6 @@ public class ExcavatorController : MonoBehaviour
     public GameObject Bucket;
     public GameObject TipPoint;
     public GameObject ZeroPoint;
-    public GameObject Slope;
     public Text Height;
     public Text Distance;
     public Canvas HomePageCanvas;
@@ -97,9 +96,8 @@ public class ExcavatorController : MonoBehaviour
 
     public void SetSlope()
     {
-        Slope.gameObject.SetActive(true);
-        Slope.transform.position = TipPoint.transform.position;
-        Slope.transform.rotation = Quaternion.Euler(0, 0, float.Parse(SlopeAngle.text));
+        ZeroPoint.transform.rotation = Quaternion.Euler(0, 0, float.Parse(SlopeAngle.text));
+        CanListener.Instance.setSlopeLevel((float.Parse(SlopeAngle.text) / 0.45f).ToString());
     }
 
     public void SetDistanceTexts()
