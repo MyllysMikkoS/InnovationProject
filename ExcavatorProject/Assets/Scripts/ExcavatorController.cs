@@ -6,15 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class ExcavatorController : MonoBehaviour
 {
+    public Camera BucketCamera, MainCamera;
     public GameObject Body;
     public GameObject Boom;
     public GameObject Stick;
     public GameObject Bucket;
     public GameObject TipPoint;
     public GameObject ZeroPoint;
+    public GameObject Slope;
     public Text Height;
     public Text Distance;
     public Canvas HomePageCanvas;
+    public InputField SlopeAngle;
 
     // FOR TESTING
     public GameObject BoomSlider;
@@ -31,6 +34,7 @@ public class ExcavatorController : MonoBehaviour
 
     public static bool angleLock;
 
+    private bool cameraSwitch = false;
 
     void Start()
     {
@@ -44,6 +48,9 @@ public class ExcavatorController : MonoBehaviour
 
     void Update()
     {
+        // Update BucketCamera location every frame
+        SetBucketCamera();
+
         // Update Excavator model on UI every frame
         SetExcavatorAngles();
 
@@ -75,10 +82,24 @@ public class ExcavatorController : MonoBehaviour
         angleLock = true;
     }
 
+    public void SetBucketCamera()
+    {
+        Vector3 offset = transform.position;
+        offset.z = -30f;
+        BucketCamera.transform.position = TipPoint.transform.position + offset;
+    }
+
     public void SetZeroPoint()
     {
         CanListener.Instance.sendResetMessage();
         ZeroPoint.transform.position = TipPoint.transform.position;
+    }
+
+    public void SetSlope()
+    {
+        Slope.gameObject.SetActive(true);
+        Slope.transform.position = TipPoint.transform.position;
+        Slope.transform.rotation = Quaternion.Euler(0, 0, -float.Parse(SlopeAngle.text));
     }
 
     public void SetDistanceTexts()
@@ -93,6 +114,13 @@ public class ExcavatorController : MonoBehaviour
         float DistanceValue = ExcavatorData388.Instance.getDistance();
         Height.text = HeightValue.ToString("0.00") + " m";
         Distance.text = DistanceValue.ToString("0.00") + " m";
+    }
+
+    public void ChangeCamera()
+    {
+        cameraSwitch = !cameraSwitch;
+        MainCamera.gameObject.SetActive(!cameraSwitch);
+        BucketCamera.gameObject.SetActive(cameraSwitch);
     }
 
     private void OnApplicationPause(bool pause)

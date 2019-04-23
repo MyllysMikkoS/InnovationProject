@@ -40,7 +40,14 @@ public class ButtonFunctions : MonoBehaviour
     public void ChangeToExcavatorView()
     {
         if (canListener.isConnected())
+        {
             HomePageCanvas.gameObject.SetActive(false);
+        }
+    }
+
+    public void BackButton()
+    {
+        HomePageCanvas.gameObject.SetActive(true);
     }
 
     public void ConnectToWebSoccet()
