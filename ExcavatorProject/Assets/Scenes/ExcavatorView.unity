@@ -944,6 +944,7 @@ GameObject:
   - component: {fileID: 757562257}
   - component: {fileID: 757562259}
   - component: {fileID: 757562258}
+  - component: {fileID: 757562260}
   m_Layer: 0
   m_Name: DistanceText
   m_TagString: Untagged
@@ -1012,6 +1013,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757562256}
   m_CullTransparentMesh: 0
+--- !u!210 &757562260
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757562256}
+  m_Enabled: 1
+  m_SortingLayerID: -1046244147
+  m_SortingLayer: 1
+  m_SortingOrder: 2
 --- !u!1 &795770786
 GameObject:
   m_ObjectHideFlags: 0
@@ -2686,6 +2698,7 @@ GameObject:
   - component: {fileID: 1473710275}
   - component: {fileID: 1473710277}
   - component: {fileID: 1473710276}
+  - component: {fileID: 1473710278}
   m_Layer: 0
   m_Name: HeightText
   m_TagString: Untagged
@@ -2754,6 +2767,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1473710274}
   m_CullTransparentMesh: 0
+--- !u!210 &1473710278
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473710274}
+  m_Enabled: 1
+  m_SortingLayerID: -1046244147
+  m_SortingLayer: 1
+  m_SortingOrder: 1
 --- !u!1 &1582238071
 GameObject:
   m_ObjectHideFlags: 0
