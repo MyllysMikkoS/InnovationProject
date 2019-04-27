@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class ExcavatorController : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class ExcavatorController : MonoBehaviour
     public Text Height;
     public Text Distance;
     public Canvas HomePageCanvas;
+    public Canvas ButtonCanvas;
+    public Canvas MainCanvas;
     public InputField SlopeAngle;
 
     public float BoomAngleZero;
@@ -42,6 +45,16 @@ public class ExcavatorController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (HomePageCanvas.isActiveAndEnabled == false)
+            {
+                HomePageCanvas.gameObject.SetActive(true);
+                MainCanvas.gameObject.SetActive(false);
+                CanListener.Instance.stop();
+            }
+        }
+
         // Update BucketCamera location every frame
         SetBucketCamera();
 
@@ -91,8 +104,12 @@ public class ExcavatorController : MonoBehaviour
 
     public void SetSlope()
     {
-        ZeroPoint.transform.rotation = Quaternion.Euler(0, 0, float.Parse(SlopeAngle.text));
-        CanListener.Instance.setSlopeLevel((float.Parse(SlopeAngle.text) / 0.45f).ToString());
+        string angle = SlopeAngle.text;
+        if (isValidSlope(angle))
+        {
+            ZeroPoint.transform.rotation = Quaternion.Euler(0, 0, float.Parse(SlopeAngle.text));
+            CanListener.Instance.setSlopeLevel((float.Parse(SlopeAngle.text) / 0.45f).ToString());
+        }
     }
 
     public void SetDistanceTexts()
@@ -111,6 +128,7 @@ public class ExcavatorController : MonoBehaviour
 
     public void ChangeCamera()
     {
+        ButtonCanvas.gameObject.SetActive(cameraSwitch);
         cameraSwitch = !cameraSwitch;
         MainCamera.gameObject.SetActive(!cameraSwitch);
         BucketCamera.gameObject.SetActive(cameraSwitch);
@@ -128,4 +146,20 @@ public class ExcavatorController : MonoBehaviour
     {
         CanListener.Instance.stop();
     }
+
+    private bool isValidSlope(string slope)
+    {
+        if (slope == null || slope == "")
+        {
+            return false;
+        }
+        double val;
+        double.TryParse(slope, out val);
+        if (val > -46 && val < 46)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

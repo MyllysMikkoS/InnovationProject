@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
     public Canvas HomePageCanvas;
+    public Canvas MainCanvas;
     public InputField IPAddressInputField;
 
     CanListener canListener;
@@ -42,12 +43,8 @@ public class ButtonFunctions : MonoBehaviour
         if (canListener.isConnected())
         {
             HomePageCanvas.gameObject.SetActive(false);
+            MainCanvas.gameObject.SetActive(true);
         }
-    }
-
-    public void BackButton()
-    {
-        HomePageCanvas.gameObject.SetActive(true);
     }
 
     public void ConnectToWebSoccet()
