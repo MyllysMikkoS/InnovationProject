@@ -146,7 +146,7 @@ if __name__ == '__main__':
     # Initialization
     channel = 0
     ip = "ws://localhost:8765"
-    ids_to_read = [386, 388, 389, 392, 393, 1418]
+    ids_to_read = [388, 389, 392, 1418]
 
     if len(sys.argv) >= 2:
         channel = int(sys.argv[1])
