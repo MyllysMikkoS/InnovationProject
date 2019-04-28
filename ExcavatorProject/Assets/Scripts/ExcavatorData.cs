@@ -18,16 +18,12 @@ class ExcavatorData386
 
     public void setData(float[] bucket)
     {
-        lock (lock386)
-        {
-            bucketAngleGround = bucket;
-        }
+        bucketAngleGround = bucket;
     }
 
     public float[] getBucketAngle()
     {
-        lock (lock386)
-            return bucketAngleGround;
+        return bucketAngleGround;
     }
 }
 
@@ -45,23 +41,18 @@ class ExcavatorData388
 
     public void setData(float height, float distance)
     {
-        lock (lock388)
-        {
-            heightFromZero = height;
-            distanceFromZero = distance;
-        }
+        heightFromZero = height;
+        distanceFromZero = distance;
     }
 
     public float getHeight()
     {
-        lock (lock388)
-            return heightFromZero;
+        return heightFromZero;
     }
 
     public float getDistance()
     {
-        lock (lock388)
-            return distanceFromZero;
+        return distanceFromZero;
     }
 }
 
@@ -78,16 +69,12 @@ class ExcavatorData389
 
     public void setData(float height)
     {
-        lock (lock389)
-        {
-            heightToSlopeFromZero = height;
-        }
+        heightToSlopeFromZero = height;
     }
 
     public float getHeight()
     {
-        lock (lock389)
-            return heightToSlopeFromZero;
+        return heightToSlopeFromZero;
     }
 }
 
@@ -108,44 +95,32 @@ class ExcavatorData392
 
     public void setBoom(float boom)
     {
-        lock (lock392)
-        {
-            boomAngle = boom;
-        }
+        boomAngle = boom;
     }
 
     public void setArm(float arm)
     {
-        lock (lock392)
-        {
-            armAngle = arm;
-        }
+        armAngle = arm;
     }
 
     public void setBucket(float bucket)
     {
-        lock (lock392)
-        {
-            bucketAngle = bucket;
-        }
+        bucketAngle = bucket;
     }
 
     public float getBoom()
     {
-        lock (lock392)
-            return boomAngle;
+        return boomAngle;
     }
 
     public float getArm()
     {
-        lock (lock392)
             return armAngle;
     }
 
     public float getBucket()
     {
-        lock (lock392)
-            return bucketAngle;
+        return bucketAngle;
     }
 }
 
@@ -163,22 +138,17 @@ class ExcavatorData393
 
     public void setData(float[] pitch, float[] roll)
     {
-        lock (lock393)
-        {
-            framePitch = pitch;
-            frameRoll = roll;
-        }
+        framePitch = pitch;
+        frameRoll = roll;
     }
 
     public float[] getPitch()
     {
-        lock (lock393)
-            return framePitch;
+        return framePitch;
     }
 
     public float[] getRoll()
     {
-        lock (lock393)
-            return frameRoll;
+        return frameRoll;
     }
 }

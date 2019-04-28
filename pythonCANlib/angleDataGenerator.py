@@ -33,7 +33,7 @@ class AngleDataGenerator:
 
     def __connect_to_web_socket(self):
         try:
-            self.webSocket = create_connection('ws://localhost:8765')
+            self.webSocket = create_connection('ws://192.168.43.161:8765')
         except Exception as ex:
             print(ex)
 

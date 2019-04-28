@@ -14,8 +14,8 @@ public class ExcavatorController : MonoBehaviour
     public GameObject Bucket;
     public GameObject TipPoint;
     public GameObject ZeroPoint;
-    public Text Height;
-    public Text Distance;
+    public Text Height, HeightZoom;
+    public Text Distance, DistanceZoom;
     public Canvas HomePageCanvas;
     public Canvas ButtonCanvas;
     public Canvas MainCanvas;
@@ -28,10 +28,11 @@ public class ExcavatorController : MonoBehaviour
     static float CurrentBoomAngle;
     static float CurrentStickAngle;
     static float CurrentBucketAngle;
-
-    public static bool angleLock;
+    
 
     private bool cameraSwitch = false;
+
+    public float lerpValue = 0.1f;
 
     void Start()
     {
@@ -66,12 +67,13 @@ public class ExcavatorController : MonoBehaviour
     }
 
     public void SetExcavatorAngles()
-    {    
-        Boom.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBoomAngle);
-        Stick.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentStickAngle);
-        Bucket.transform.localEulerAngles = new Vector3(0, 0, 360 - CurrentBucketAngle);
-
-        angleLock = false;
+    {
+        float boomAngle = Mathf.LerpAngle(Boom.transform.localEulerAngles.z, 360 - CurrentBoomAngle, Time.time * lerpValue);
+        Boom.transform.localEulerAngles = new Vector3(0, 0, boomAngle);
+        float stickAngle = Mathf.LerpAngle(Stick.transform.localEulerAngles.z, 360 - CurrentStickAngle, Time.time * lerpValue);
+        Stick.transform.localEulerAngles = new Vector3(0, 0, stickAngle);
+        float bucketAngle = Mathf.LerpAngle(Bucket.transform.localEulerAngles.z, 360 - CurrentBucketAngle, Time.time * lerpValue);
+        Bucket.transform.localEulerAngles = new Vector3(0, 0, bucketAngle);
     }
 
     /// <summary>
@@ -85,15 +87,17 @@ public class ExcavatorController : MonoBehaviour
         CurrentBoomAngle = BoomAngle;
         CurrentStickAngle = StickAngle;
         CurrentBucketAngle = BucketAngle;
-
-        angleLock = true;
     }
 
     public void SetBucketCamera()
     {
         Vector3 offset = transform.position;
         offset.z = -30f;
-        BucketCamera.transform.position = TipPoint.transform.position + offset;
+
+        float targetX = Mathf.Lerp(BucketCamera.transform.position.x, TipPoint.transform.position.x, 1 / 0.1f * Time.deltaTime);
+        float targetY = Mathf.Lerp(BucketCamera.transform.position.y, TipPoint.transform.position.y, 1 / 0.1f * Time.deltaTime);
+        BucketCamera.transform.position = new Vector3(targetX, targetY, offset.z);
+
     }
 
     public void SetZeroPoint()
@@ -124,6 +128,8 @@ public class ExcavatorController : MonoBehaviour
         float DistanceValue = ExcavatorData388.Instance.getDistance();
         Height.text = HeightValue.ToString("0.00") + " m";
         Distance.text = DistanceValue.ToString("0.00") + " m";
+        HeightZoom.text = HeightValue.ToString("Height:\n" + "0.00") + " m";
+        DistanceZoom.text = DistanceValue.ToString("Distance:\n" + "0.00") + " m";
     }
 
     public void ChangeCamera()

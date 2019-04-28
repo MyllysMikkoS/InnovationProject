@@ -104,27 +104,13 @@ internal class NotificationMessage
 
 internal class Data
 {
-    private float[] bucketAngleGround = new float[2] { 0, 0 };
     private float[] bucketAngle = new float[2] { 0, 0 };
     private float[] boomAngle = new float[2] { 0, 0 };
     private float[] armAngle = new float[2] { 0, 0 };
-    private float[] headingAngle = new float[2] { 0, 0 };
-    private float[] heightFromZero = new float[4] { 0, 0, 0, 0 };
-    private float[] distanceFromZero = new float[4] { 0, 0, 0, 0 };
-    private float[] heightToSlopeFromZero = new float[4] { 0, 0, 0, 0 };
-    private float[] framePitch = new float[2] { 0, 0 };
-    private float[] frameRoll = new float[2] { 0, 0 };
-
 
     public void parseMessage(string header, string message)
     {
-        /*
-        if (header.StartsWith("386"))
-        {
-            if (message != null)
-                parse386(message);
-        }
-        */
+        
         if (header.StartsWith("388"))
         {
             if (message != null)
@@ -141,27 +127,28 @@ internal class Data
             if (message != null)
                 parse392(message);
         }
-        /*
+
+        /*To do if needed
+        else if (header.StartsWith("386"))
+        {
+            if (message != null)
+                parse386(message);
+        }
+
         else if (header.StartsWith("393"))
         {
             if (message != null)
                 parse393(message);
         }
-        */  
+        */
     }
 
+    /*To do if needed
     private void parse386(string message)
     {
-        string[] values = message.Split('.');
-        int length = values.Length;
-
-        if (length > 1)
-            bucketAngleGround[0] = convertToDegrees(Convert.ToInt32(values[1]));
-        if (length > 2)
-            bucketAngleGround[1] = convertToDegrees(Convert.ToInt32(values[2]));
-
-        ExcavatorData386.Instance.setData(bucketAngleGround);
+    
     }
+    */
 
     private void parse388(string message)
     {
@@ -225,10 +212,6 @@ internal class Data
             ExcavatorData392.Instance.setBucket(convertBucket(bucketAngle[0], bucketAngle[1]));
         }
 
-        // TODO
-        while (ExcavatorController.angleLock) {
-
-        }
         ExcavatorController.UpdateAngleData(ExcavatorData392.Instance.getBoom(), ExcavatorData392.Instance.getArm(), ExcavatorData392.Instance.getBucket());
     }
 
@@ -250,27 +233,11 @@ internal class Data
             return (float)((256 * bucketTwo) + bucketOne) / 10 -10;
     }
 
+    /*To do if needed
     private void parse393(string message)
     {
-        string[] values = message.Split('.');
-        int length = values.Length;
-
-        if (length > 0)
-            framePitch[0] = convertToDegrees(Convert.ToInt32(values[0]));
-        if (length > 1)
-            framePitch[1] = convertToDegrees(Convert.ToInt32(values[1]));
-        if (length > 2)
-            frameRoll[0] = convertToDegrees(Convert.ToInt32(values[2]));
-        if (length > 3)
-            frameRoll[1] = convertToDegrees(Convert.ToInt32(values[3]));
-
-        ExcavatorData393.Instance.setData(framePitch, frameRoll);
+      
     }
-
-    private float convertToDegrees(int convertable)
-    {
-        float con = (float)convertable;
-        return (con / 255) * 180;
-    }
+    */
 }
 
