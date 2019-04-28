@@ -64,7 +64,6 @@ public class CanListener
                     Body = e.Message,
                     Parse = false
                 });
-
         };
 
         m_socket.OnClose += (sender, e) =>
@@ -76,7 +75,6 @@ public class CanListener
                     Summary = "WebSocket OnClose",
                     Body = e.Reason + " " + e.Code
                 });
-
         };
     }
 

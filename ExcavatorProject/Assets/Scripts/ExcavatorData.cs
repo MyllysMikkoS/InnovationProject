@@ -7,8 +7,7 @@ using UnityEngine;
 
 class ExcavatorData386
 {
-    private float[] bucketAngleGround = new float[2] { 0, 0 };
-    private readonly object lock386 = new object();
+    private volatile float[] bucketAngleGround = new float[2] { 0, 0 };
 
     private static readonly Lazy<ExcavatorData386> lazy =
         new Lazy<ExcavatorData386>(() => new ExcavatorData386());
@@ -29,9 +28,8 @@ class ExcavatorData386
 
 class ExcavatorData388
 {
-    private float heightFromZero = 0;
-    private float distanceFromZero = 0;
-    private readonly object lock388 = new object();
+    private volatile float heightFromZero = 0;
+    private volatile float heightToSlopeFromZero = 0;
 
     private static readonly Lazy<ExcavatorData388> lazy =
     new Lazy<ExcavatorData388>(() => new ExcavatorData388());
@@ -39,15 +37,36 @@ class ExcavatorData388
     public static ExcavatorData388 Instance { get { return lazy.Value; } }
 
 
-    public void setData(float height, float distance)
+    public void setData(float height, float slopeHeigtht)
     {
         heightFromZero = height;
-        distanceFromZero = distance;
+        heightToSlopeFromZero = slopeHeigtht;
     }
 
     public float getHeight()
     {
         return heightFromZero;
+    }
+
+    public float getSlopeHeight()
+    {
+        return heightToSlopeFromZero;
+    }
+}
+
+class ExcavatorData389
+{
+    private volatile float distanceFromZero = 0;
+
+    private static readonly Lazy<ExcavatorData389> lazy =
+    new Lazy<ExcavatorData389>(() => new ExcavatorData389());
+
+    public static ExcavatorData389 Instance { get { return lazy.Value; } }
+
+
+    public void setData(float distance)
+    {
+        distanceFromZero = distance;
     }
 
     public float getDistance()
@@ -56,36 +75,13 @@ class ExcavatorData388
     }
 }
 
-class ExcavatorData389
-{
-    private float heightToSlopeFromZero = 0;
-    private readonly object lock389 = new object();
-
-    private static readonly Lazy<ExcavatorData389> lazy =
-    new Lazy<ExcavatorData389>(() => new ExcavatorData389());
-
-    public static ExcavatorData389 Instance { get { return lazy.Value; } }
-
-
-    public void setData(float height)
-    {
-        heightToSlopeFromZero = height;
-    }
-
-    public float getHeight()
-    {
-        return heightToSlopeFromZero;
-    }
-}
-
 
 class ExcavatorData392
 {
-    private float bucketAngle = 0;
-    private float boomAngle = 0;
-    private float armAngle = 0;
-    private float[] headingAngle = new float[2] { 0, 0 };
-    private readonly object lock392 = new object();
+    private volatile float bucketAngle = 0;
+    private volatile float boomAngle = 0;
+    private volatile float armAngle = 0;
+    private volatile float[] headingAngle = new float[2] { 0, 0 };
 
     private static readonly Lazy<ExcavatorData392> lazy =
     new Lazy<ExcavatorData392>(() => new ExcavatorData392());
@@ -126,9 +122,8 @@ class ExcavatorData392
 
 class ExcavatorData393
 {
-    private float[] framePitch = new float[2] { 0, 0 };
-    private float[] frameRoll = new float[2] { 0, 0 };
-    private readonly object lock393 = new object();
+    private volatile float[] framePitch = new float[2] { 0, 0 };
+    private volatile float[] frameRoll = new float[2] { 0, 0 };
 
     private static readonly Lazy<ExcavatorData393> lazy =
     new Lazy<ExcavatorData393>(() => new ExcavatorData393());

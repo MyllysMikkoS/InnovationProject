@@ -32,7 +32,7 @@ public class ExcavatorController : MonoBehaviour
 
     private bool cameraSwitch = false;
 
-    public float lerpValue = 0.1f;
+    public float lerpValue;
 
     void Start()
     {
@@ -53,6 +53,10 @@ public class ExcavatorController : MonoBehaviour
                 HomePageCanvas.gameObject.SetActive(true);
                 MainCanvas.gameObject.SetActive(false);
                 CanListener.Instance.stop();
+                if (cameraSwitch)
+                {
+                    ChangeCamera();
+                }
             }
         }
 
@@ -124,12 +128,12 @@ public class ExcavatorController : MonoBehaviour
         position.x -= 2f;
         position.y += 1.3f;
         Distance.transform.position = position;
-        float HeightValue = ExcavatorData389.Instance.getHeight();
-        float DistanceValue = ExcavatorData388.Instance.getDistance();
+        float HeightValue = ExcavatorData388.Instance.getSlopeHeight();
+        float DistanceValue = ExcavatorData389.Instance.getDistance();
         Height.text = HeightValue.ToString("0.00") + " m";
         Distance.text = DistanceValue.ToString("0.00") + " m";
-        HeightZoom.text = HeightValue.ToString("Height:\n" + "0.00") + " m";
-        DistanceZoom.text = DistanceValue.ToString("Distance:\n" + "0.00") + " m";
+        HeightZoom.text = "Height:\n" + Height.text;
+        DistanceZoom.text = "Distance:\n" + Distance.text;
     }
 
     public void ChangeCamera()

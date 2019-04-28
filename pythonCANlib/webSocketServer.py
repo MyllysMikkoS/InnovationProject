@@ -9,9 +9,12 @@ clients = []
 class CanWebSocketServer(WebSocket):
 
     def handleMessage(self):
-        for client in clients:
-            if client != self:
-                client.sendMessage(self.data)
+        if self == clients[0]:
+            for client in clients:
+                if client != self:
+                    client.sendMessage(self.data)
+        else:
+            clients[0].sendMessage(self.data)
 
     def handleConnected(self):
         print(self.address, 'connected')

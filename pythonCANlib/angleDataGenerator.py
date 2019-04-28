@@ -12,11 +12,11 @@ class AngleDataGenerator:
         self.webSocket = None
         self.ip_address = None
 
-    def generate(self, file_name, interval, ids):
+    def generate(self, file_name, ip_address, interval, ids):
         self.__parse_text_file_to_data(file_name, ids)
 
         if len(self.angleData) > 20:
-            self.__connect_to_web_socket()
+            self.__connect_to_web_socket(ip_address)
             if self.webSocket is not None:
                 self.__dump_message_loop(interval)
 
@@ -31,9 +31,9 @@ class AngleDataGenerator:
                     temp = ':'.join('.'.join(temp).split('.', 1))
                     self.angleData.append(temp)
 
-    def __connect_to_web_socket(self):
+    def __connect_to_web_socket(self, ip_address):
         try:
-            self.webSocket = create_connection('ws://192.168.43.161:8765')
+            self.webSocket = create_connection(ip_address)
         except Exception as ex:
             print(ex)
 
@@ -61,11 +61,15 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, exit_gracefully)
     signal.signal(signal.SIGTERM, exit_gracefully)
 
-    data_source_file = 'canData.txt'
-    # ids_to_read = ('386', '388', '389', '392', '393')
-    ids_to_read = '392'
+    data_source_file = 'canData2.txt'
+    ids_to_read = ('388', '389', '392')
+    # ids_to_read = '392'
     message_interval = 0.01
+    ip = "ws://localhost:8765"
+
+    if len(sys.argv) >= 2:
+        ip = "ws://" + sys.argv[1]
 
     generator = AngleDataGenerator()
-    generator.generate(data_source_file, message_interval, ids_to_read)
+    generator.generate(data_source_file, ip, message_interval, ids_to_read)
     generator.stop()

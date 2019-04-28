@@ -110,7 +110,6 @@ internal class Data
 
     public void parseMessage(string header, string message)
     {
-        
         if (header.StartsWith("388"))
         {
             if (message != null)
