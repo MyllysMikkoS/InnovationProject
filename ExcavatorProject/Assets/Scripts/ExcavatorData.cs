@@ -147,3 +147,55 @@ class ExcavatorData393
         return frameRoll;
     }
 }
+
+class ExcavatorZeroPoint
+{
+    private volatile bool zeroPointBool = false;
+
+    private static readonly Lazy<ExcavatorZeroPoint> lazy =
+        new Lazy<ExcavatorZeroPoint>(() => new ExcavatorZeroPoint());
+
+    public static ExcavatorZeroPoint Instance { get { return lazy.Value; } }
+
+    public void newZeroPoint()
+    {
+        zeroPointBool = true;
+    }
+
+    public bool checkZeroPoint()
+    {
+        return zeroPointBool;
+    }
+
+    public void zeroPointSet()
+    {
+        zeroPointBool = false;
+    }
+}
+
+/* TODO
+class ExcavatorSlope
+{
+    private volatile bool slopeBool = false;
+
+    private static readonly Lazy<ExcavatorSlope> lazy =
+        new Lazy<ExcavatorSlope>(() => new ExcavatorSlope());
+
+    public static ExcavatorSlope Instance { get { return lazy.Value; } }
+
+    public void newSlope()
+    {
+        slopeBool = true;
+    }
+
+    public bool checkSlope()
+    {
+        return slopeBool;
+    }
+
+    public void slopeSet()
+    {
+        slopeBool = false;
+    }
+}
+*/

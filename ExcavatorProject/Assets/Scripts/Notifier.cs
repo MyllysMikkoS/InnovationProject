@@ -110,7 +110,12 @@ internal class Data
 
     public void parseMessage(string header, string message)
     {
-        if (header.StartsWith("388"))
+        if (header.StartsWith("392"))
+        {
+            if (message != null)
+                parse392(message);
+        }
+        else if (header.StartsWith("388"))
         {
             if (message != null)
                 parse388(message);
@@ -120,20 +125,17 @@ internal class Data
             if (message != null)
                 parse389(message);
         }
-
-        else if (header.StartsWith("392"))
+        else if (header.StartsWith("1418"))
         {
             if (message != null)
-                parse392(message);
+                parse1418(message);
         }
-
         /*To do if needed
         else if (header.StartsWith("386"))
         {
             if (message != null)
                 parse386(message);
         }
-
         else if (header.StartsWith("393"))
         {
             if (message != null)
@@ -212,6 +214,32 @@ internal class Data
         }
 
         ExcavatorController.UpdateAngleData(ExcavatorData392.Instance.getBoom(), ExcavatorData392.Instance.getArm(), ExcavatorData392.Instance.getBucket());
+    }
+
+    private void parse1418(string message)
+    {
+        string[] values = message.Split('.');
+        int length = values.Length;
+        if (length > 3)
+        {
+            if ("96".Equals(values[0]))
+            {
+                if ("32".Equals(values[1]))
+                {
+                    if ("32".Equals(values[2]))
+                    {
+                        if ("2".Equals(values[3]))
+                        {
+                            ExcavatorZeroPoint.Instance.newZeroPoint();
+                        }
+                        else if ("1".Equals(values[3]))
+                        {
+                            //TODO Slope
+                        }
+                    }
+                }
+            }
+        }
     }
 
     float convertBoom(float boomOne, float boomTwo)

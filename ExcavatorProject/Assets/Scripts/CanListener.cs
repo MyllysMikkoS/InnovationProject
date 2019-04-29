@@ -98,6 +98,7 @@ public class CanListener
     public void setSlopeLevel(String slope)
     {
         if (slope.Length < 10) {
+            Debug.Log(slope);
             byte[] keyBytes = { 83, 76, 79, 58 }; // SLO:
             byte[] slopeBytes = System.Text.Encoding.ASCII.GetBytes(slope);
 

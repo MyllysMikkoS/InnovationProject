@@ -70,11 +70,11 @@ class CanListener:
 
     def __set_slope_level(self, msg):
         try:
+            msg = msg.replace(",", ".")
             slope = float(msg.split(":", 1)[1])
-            if 0 <= slope <= 100:
-                ba = bytearray(struct.pack("f", slope))
-                frame = Frame(id_=1546, data=[int('00100011', 2), 32, 32, 1, ba[0], ba[1], ba[2], ba[3]], dlc=8, flags=0)
-                self.channel.write(frame)
+            ba = bytearray(struct.pack("f", slope))
+            frame = Frame(id_=1546, data=[int('00100011', 2), 32, 32, 1, ba[0], ba[1], ba[2], ba[3]], dlc=8, flags=0)
+            self.channel.write(frame)
         except ValueError:
             pass
 

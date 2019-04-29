@@ -13,7 +13,7 @@ public class ExcavatorController : MonoBehaviour
     public GameObject Stick;
     public GameObject Bucket;
     public GameObject TipPoint;
-    public GameObject ZeroPoint;
+    public GameObject ZeroPoint, ZeroPointX;
     public Text Height, HeightZoom;
     public Text Distance, DistanceZoom;
     public Canvas HomePageCanvas;
@@ -41,6 +41,9 @@ public class ExcavatorController : MonoBehaviour
             UpdateAngleData(BoomAngleZero, StickAngleZero, BucketAngleZero);
 
             SetExcavatorAngles();
+
+            SetZeroPoint();
+            CanListener.Instance.setSlopeLevel("0");
         }
     }
 
@@ -60,6 +63,12 @@ public class ExcavatorController : MonoBehaviour
             }
         }
 
+        if (ExcavatorZeroPoint.Instance.checkZeroPoint())
+        {
+            ZeroPoint.transform.position = TipPoint.transform.position;
+            ZeroPointX.transform.position = TipPoint.transform.position;
+            ExcavatorZeroPoint.Instance.zeroPointSet();
+        }
         // Update BucketCamera location every frame
         SetBucketCamera();
 
@@ -108,15 +117,19 @@ public class ExcavatorController : MonoBehaviour
     {
         CanListener.Instance.sendResetMessage();
         ZeroPoint.transform.position = TipPoint.transform.position;
+        ZeroPointX.transform.position = TipPoint.transform.position;
     }
+
+
 
     public void SetSlope()
     {
         string angle = SlopeAngle.text;
         if (isValidSlope(angle))
         {
-            ZeroPoint.transform.rotation = Quaternion.Euler(0, 0, float.Parse(SlopeAngle.text));
-            CanListener.Instance.setSlopeLevel((float.Parse(SlopeAngle.text) / 0.45f).ToString());
+            ZeroPoint.transform.rotation = Quaternion.Euler(0, 0, -float.Parse(SlopeAngle.text));
+            string slopeAngle = (float.Parse(SlopeAngle.text) / 0.45f).ToString();
+            CanListener.Instance.setSlopeLevel(slopeAngle);
         }
     }
 
